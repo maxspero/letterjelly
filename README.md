@@ -66,3 +66,17 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+### Setup dependencies: what I did
+npx create-react-app letterjelly
+npm install boardgame.io
+npm install esm
+
+### Setup after git clone
+npm install
+
+### Start 
+npm start
+
+### Serve
+npm run serve
