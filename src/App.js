@@ -8,20 +8,22 @@ import { SocketIO } from 'boardgame.io/multiplayer'
 // import { Local } from 'boardgame.io/multiplayer';
 
 // LetterJelly dependencies
-import { TicTacToe } from './Game';
-import { TicTacToeBoard } from './Board';
+import { LetterJelly } from './Game';
+import { LetterJellyBoard } from './Board';
 
 
-const TicTacToeClient = Client({ 
-  game: TicTacToe,
-  board: TicTacToeBoard,
+const LetterJellyClient = Client({ 
+  game: LetterJelly,
+  board: LetterJellyBoard,
+  // Local (debug) multiplayer
+  // multiplayer: Local(),
   multiplayer: SocketIO({ server: 'localhost:8000' }),
 });
 
 const App = () => (
   <div>
-    <TicTacToeClient playerID="0" />
-    <TicTacToeClient playerID="1" />
+    <LetterJellyClient playerID="0" />
+    <LetterJellyClient playerID="1" />
   </div>
 );
 

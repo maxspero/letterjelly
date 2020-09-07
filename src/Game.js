@@ -1,19 +1,47 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
+import * as actions from './Actions.js'; 
 
-export const TicTacToe = {
-  setup: () => ({ cells: Array(9).fill(null) }),
+
+export const LetterJelly = {
+  setup: (ctx) => ({ 
+    cells: Array(ctx.numPlayers).fill(null),
+
+
+
+  }),
 
   turn: {
     moveLimit: 1,
   },
 
-
-  moves: {
-    clickCell: (G, ctx, id) => {
-      if (G.cells[id] !== null) {
-        return INVALID_MOVE;
+  phases: {
+    selectWords: {
+      moves: {
+        submitWord: actions.submitWord,
+      },
+      start: true
+    },
+    selectHinter: {
+      moves: {
+        nominateSelfAsHinter: actions.nominateSelfAsHinter,
       }
-      G.cells[id] = ctx.currentPlayer;
+    },
+    giveHints: {
+      moves: {
+        hintPlayer: actions.hintPlayer,
+        undoHint: actions.undoHint,
+        submitHints: actions.submitHints,
+      }
+    },
+    moveOnChoice: {
+      moves: {
+        chooseToMoveOn: actions.chooseToMoveOn,
+      }
+    },
+    guessWord: {
+      moves: {
+        assignGuesses: actions.assignGuesses,
+      }
     },
   },
 
@@ -25,6 +53,17 @@ export const TicTacToe = {
       return { draw: true };
     }
   },
+
+  // Remove secrets and also information about themselves
+  // playerview: (g, ctx, playerid) => {
+  //   let r = { ...G }; if (r.secret !== undefined) {
+  //     delete r.secret;
+  //   }
+  //   if (r.players[playerID] !== undefined) {
+  //     delete r.players[playerID];
+  //   }
+  //   return r;
+  // },
 };
 
 // Return true if `cells` is in a winning configuration.
