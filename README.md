@@ -1,3 +1,11 @@
+# Letterjelly
+
+This is an online game inspired by the physical board game [Letter Jam](https://czechgames.com/en/letter-jam/) by Ondra Skoupý.
+
+It is currently non-functional.
+
+# Commands and stuff
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
