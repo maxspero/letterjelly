@@ -45,6 +45,7 @@ export function nominateSelfAsHinter(G, ctx) {
   }
   G.hinter = player;
   console.log(player);
+  ctx.events.endTurn({ next: player });
   // ctx.events.endPhase();
   // ctx.events.endTurn({ next: player });
 }
@@ -62,7 +63,6 @@ export function undoHint(G, ctx) {
 export function submitHints(G, ctx) {
   console.log('Submit Hint!');
   G.hintGiven = true;
-  ctx.events.setActivePlayers({ all: 'moveOnStage', moveLimit: 1 });
 }
 
 // moveOnChoice phase

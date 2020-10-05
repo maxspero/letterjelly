@@ -16,6 +16,7 @@ export const LetterJelly = {
     greenHints: 6,
     hinter: null,
     currentHint: [],
+    hintHistory: [],
     hintGiven: false,
     moveOnChosen: Array(ctx.numPlayers).fill(false),
     playerNames: Array(ctx.numPlayers).fill(""),
@@ -43,52 +44,53 @@ export const LetterJelly = {
         nominateSelfAsHinter: actions.nominateSelfAsHinter,
       },
       endIf: G => (G.hinter !== null),
-      next: 'mainPhase',
+      next: 'giveHints',
       onBegin: actions.updateLetters,
     },
-    mainPhase: {
-      stages: {
-        giveHints: {
-          moves: {
-            hintPlayer: actions.hintPlayer,
-            undoHint: actions.undoHint,
-            submitHints: actions.submitHints,
-          },
-          turn: {
-            endIf: (G, ctx) => (G.hintGiven),
-          },
-        },
-        moveOnStage: {
-          moves: {
-            chooseToMoveOn: actions.chooseToMoveOn,
-          },
-          turn: {
-            activePlayers: ActivePlayers.ALL,
-          },
-        },
-      },
+    giveHints: {
       moves: {
         hintPlayer: actions.hintPlayer,
         undoHint: actions.undoHint,
         submitHints: actions.submitHints,
-        chooseToMoveOn: actions.chooseToMoveOn,
+      },
+      turn: {
+        endIf: (G, ctx) => (G.hintGiven),
       },
       onBegin: (G, ctx) => {
         G.moveOnChosen.fill(false);
         G.hintGiven = false;
         G.currentHint = [];
-        let stages = {};
-        stages[G.hinter] = 'giveHints';
-        ctx.events.setActivePlayers({
-          value: stages,
-          moves: 500,
-        });
+        // let stages = {};
+        // stages[G.hinter] = 'giveHints';
+        // ctx.events.setActivePlayers({
+        //   value: stages,
+        //   moves: 500,
+        // });
+      },
+      endIf: G => (G.hintGiven),
+      next: 'moveOnPhase',
+    },
+    moveOnPhase: {
+      moves: {
+        chooseToMoveOn: actions.chooseToMoveOn,
+      },
+      turn: {
+        activePlayers: ActivePlayers.ALL,
+      },
+      moves: {
+        chooseToMoveOn: actions.chooseToMoveOn,
       },
       endIf: (G, ctx) => {
-        if (!G.hintGiven || G.moveOnChosen.some(e => e)) {
-          return false;
+        if (G.moveOnChosen.every(e => e)) {
+          return { next: G.greenHints === 0 ? 'guessWords' : 'selectHinter' }
         }
-        return { next: G.greenHints === 0 ? 'guessWords' : 'selectHinter' }
+        return false;
+      },
+      turn: {
+        activePlayers: ActivePlayers.ALL,
+      },
+      onBegin: (G, ctx) => {
+        G.hintHistory.push(G.currentHint);
       },
     },
     guessWords: {

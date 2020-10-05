@@ -63,7 +63,7 @@ export class LetterJellyBoard extends React.Component {
     let undoButton = '';
     let submitButton = ''
 
-    if (this.props.ctx.phase === 'mainPhase' && !this.props.G.hintGiven) {
+    if (this.props.ctx.phase === 'giveHints' && !this.props.G.hintGiven) {
       if (this.props.playerID === this.props.G.hinter) {
         hinter = "You are the hinter. Click on other player's cards to construct your hint."
         undoButton = (
@@ -83,7 +83,7 @@ export class LetterJellyBoard extends React.Component {
     }
 
     let hintedWord = ''
-    if (this.props.ctx.phase === 'mainPhase') {
+    if (this.props.ctx.phase === 'giveHints' || this.props.ctx.phase === 'moveOnPhase') {
       for (let i = 0; i < this.props.G.currentHint.length; i++) {
         let char = '';
         if (this.props.G.currentHint[i] === '*') {
@@ -100,15 +100,15 @@ export class LetterJellyBoard extends React.Component {
 
     let keepLetterButton = '';
     let nextLetterButton = '';
-    if (this.props.ctx.phase === 'mainPhase' && this.props.G.hintGiven && !this.props.G.moveOnChosen[playerIDNum]) {
+    if (this.props.ctx.phase === 'moveOnPhase' && this.props.G.hintGiven && !this.props.G.moveOnChosen[playerIDNum]) {
       keepLetterButton = (
         <button onClick={() => this.props.moves.chooseToMoveOn(false)}>  
-          Keep Letter 
+          Keep letter 
         </button>
       );
       nextLetterButton = (
         <button onClick={() => this.props.moves.chooseToMoveOn(true)}>  
-          Keep Letter 
+          Move on to next letter 
         </button>
       );
     }
