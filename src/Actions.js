@@ -7,6 +7,8 @@ export function updateLetters(G, ctx) {
     console.log(i + ': ' + G.letters[i][G.currentLetterIndex[i]]);
     G.currentLetter[i] = G.letters[i][G.currentLetterIndex[i]];
   }
+  G.hintGiven = false;
+  G.currentHint = [];
 }
 
 // selectWords phase
@@ -28,12 +30,10 @@ export function submitWord(G, ctx, word, playerName) {
   G.words[player] = word;
   G.letters[player] = ctx.random.Shuffle(word.split(''));
   // Do this
-  ctx.events.setActivePlayers({ all: 'selectWord', moveLimit: 1 });
 }
         
 // selectHinter phase
 export function nominateSelfAsHinter(G, ctx) {
-  // player = ctx.currentPlayer;
   let player = ctx.playerID;
   if (G.redHints[player] > 0) {
     G.redHints[player]--;
@@ -46,8 +46,6 @@ export function nominateSelfAsHinter(G, ctx) {
   G.hinter = player;
   console.log(player);
   ctx.events.endTurn({ next: player });
-  // ctx.events.endPhase();
-  // ctx.events.endTurn({ next: player });
 }
 
 // giveHints phase

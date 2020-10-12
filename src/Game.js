@@ -46,6 +46,9 @@ export const LetterJelly = {
       endIf: G => (G.hinter !== null),
       next: 'giveHints',
       onBegin: actions.updateLetters,
+      turn: {
+        activePlayers: ActivePlayers.ALL,
+      },
     },
     giveHints: {
       moves: {
@@ -54,12 +57,17 @@ export const LetterJelly = {
         submitHints: actions.submitHints,
       },
       turn: {
+        order: {
+          first: (G, ctx) => Number.parseInt(G.hinter),
+          next: (G, ctx) => Number.parseInt(G.hinter),
+        },
         endIf: (G, ctx) => (G.hintGiven),
       },
       onBegin: (G, ctx) => {
         G.moveOnChosen.fill(false);
         G.hintGiven = false;
         G.currentHint = [];
+        console.log('giveHints started');
         // let stages = {};
         // stages[G.hinter] = 'giveHints';
         // ctx.events.setActivePlayers({
@@ -77,21 +85,22 @@ export const LetterJelly = {
       turn: {
         activePlayers: ActivePlayers.ALL,
       },
-      moves: {
-        chooseToMoveOn: actions.chooseToMoveOn,
+      onBegin: (G, ctx) => {
+        console.log('set hinter to null');
+        G.hinter = null;
+        console.log(G.hinter);
+        G.hintHistory.push(G.currentHint);
       },
       endIf: (G, ctx) => {
         if (G.moveOnChosen.every(e => e)) {
-          return { next: G.greenHints === 0 ? 'guessWords' : 'selectHinter' }
+          let nextPhase = G.greenHints === 0 ? 'guessWords' : 'selectHinter';
+          console.log(nextPhase);
+          // return { next: nextPhase };
+          return true;
         }
         return false;
       },
-      turn: {
-        activePlayers: ActivePlayers.ALL,
-      },
-      onBegin: (G, ctx) => {
-        G.hintHistory.push(G.currentHint);
-      },
+      next: 'selectHinter',
     },
     guessWords: {
       moves: {

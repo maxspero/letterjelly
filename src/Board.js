@@ -166,7 +166,6 @@ export class LetterJellyBoard extends React.Component {
     }
 
     let tbody = [];
-    let names = [];
     let nameCells = [];
     let letterCells = [];
     // Self card 
