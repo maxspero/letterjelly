@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles.css';
 
 export class LetterJellyBoard extends React.Component {
   constructor(props) {
@@ -113,33 +114,6 @@ export class LetterJellyBoard extends React.Component {
       );
     }
 
-    const tableStyle = {
-      tableLayout: 'fixed',
-    };
-
-    const nameStyle = {
-      border: '0px',
-      width: '50px',
-      height: '50px',
-      lineHeight: '50px',
-      textAlign: 'center',
-    };
-
-    const letterStyle = {
-      border: '1px solid #555',
-      width: '50px',
-      height: '50px',
-      lineHeight: '50px',
-      textAlign: 'center',
-    };
-
-    const hintCellStyle = {
-      border: '0px',
-      width: '50px',
-      height: '25px',
-      lineHeight: '25px',
-    };
-
     function hintCircleStyle(num) {
       let colors = [
         'red',
@@ -170,24 +144,24 @@ export class LetterJellyBoard extends React.Component {
     let letterCells = [];
     // Self card 
     nameCells.push(
-      <td style={nameStyle} key={this.props.playerID}>
+      <td className='nameCell' key={this.props.playerID}>
         {this.props.playerName}
       </td>
     );
     letterCells.push(
-      <td style={letterStyle} key={this.props.playerID}>
+      <td className='letterCell' key={this.props.playerID}>
         ? ({this.props.G.currentLetterIndex[playerIDNum]})
       </td>
     );
     for (let i = 0; i < this.props.ctx.numPlayers; i++) {
       if (i !== playerIDNum) {
         nameCells.push(
-          <td style={nameStyle} key={i}>
+          <td className='nameCell' key={i}>
             {this.props.G.playerNames[i]}
           </td>
         );
         let cell = (
-          <td style={letterStyle} key={i} onClick={() => this.onClick(i)}>
+          <td className='letterCell' key={i} onClick={() => this.onClick(i)}>
             {this.props.G.currentLetter[i]}
           </td>
         );
@@ -198,12 +172,12 @@ export class LetterJellyBoard extends React.Component {
     }
     // Wildcard
     nameCells.push(
-      <td style={nameStyle} key={'*'}>
+      <td className='nameCell' key={'*'}>
         Wildcard
       </td>
     );
     letterCells.push(
-      <td style={letterStyle} key={'*'} onClick={() => this.onClick('*')}>
+      <td className='letterCell' key={'*'} onClick={() => this.onClick('*')}>
         *
       </td>
     );
@@ -222,7 +196,7 @@ export class LetterJellyBoard extends React.Component {
       for (let j = 0; j < this.props.ctx.numPlayers + 1; j++) {
         if (j === index) {
           row.push(
-            <td key={j} style={hintCellStyle}>
+            <td key={j} className='hintCell'>
               <span style={hintCircleStyle(i)}>
                 {i+1}
               </span>
@@ -234,6 +208,13 @@ export class LetterJellyBoard extends React.Component {
       }
       tbody.push(<tr key={i+2}>{row}</tr>);
     }
+
+    const rowStyle = {
+      border: '0px',
+      width: '50px',
+      height: '25px',
+      lineHeight: '25px',
+    };
 
     return (
       <div>
@@ -250,7 +231,7 @@ export class LetterJellyBoard extends React.Component {
           {keepLetterButton}
           {nextLetterButton}
         </div>
-        <table id="board" style={tableStyle}>
+        <table id="board" className='hintTable'>
           <tbody>{tbody}</tbody>
         </table>
       </div>
